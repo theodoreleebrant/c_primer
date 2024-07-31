@@ -8,8 +8,45 @@
 \usepackage{minted}
 \usemintedstyle{pastie}
 
-\setlength\parindent{0pt} %noindent
+\usepackage{xcolor, colortbl}
+\usepackage{amsmath}
+\usepackage{awesomebox}
+\def\abIconCode{\symbol{"F120}}
+\def\abIconPencil{\symbol{"F044}}
+\def\abIconBook{\symbol{"F02D}}
+\newcommand{\codebox}[1]{
+    \awesomebox{2pt}{\faTerminal}{black}{#1}
+}
+\newenvironment{typewriter}{\ttfamily}{\sffamily}
 
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{exercise}{Exercise}[chapter]
+
+
+\usepackage{hyperref}
+\providecommand*{\exerciseautorefname}{Exercise}
+% \renewcommand{\exerciseautorefname}{Exercise}
+
+\usepackage{geometry}
+\geometry{a4paper, margin=1.2in}
+\setlength{\parskip}{0pt}
+\setlength{\parsep}{0pt}
+% \setlength{\headsep}{0pt}
+\setlength{\topskip}{0pt}
+\setlength{\topmargin}{0pt}
+\setlength{\topsep}{0pt}
+\setlength{\partopsep}{0pt}
+
+% \usepackage{etoolbox}
+% \makeatletter
+% \patchcmd{\minted@colorbg}{\medskip}{}{}{}
+% \patchcmd{\endminted@colorbg}{\medskip}{}{}{}
+% \makeatother
+
+% \newcommand{\printvalues}{topsep=\the\topsep; itemsep=\the\itemsep; parsep=\the\parsep; partopsep=\the\partopsep}
+\setlength\parindent{0pt} %noindent
+\setlength\partopsep{-\topsep} %minted woes
 
 \title{Quick Start to C: A Primer}
 \author{Theodore Leebrant}
@@ -38,56 +75,13 @@
 
 \setlength{\parskip}{12pt}
 
-\chapter{Introduction}
-This primer is intended for a reader who has a working knowledge of a high-level programming language and want to start to learn how to program in C. It is by no means a substitute to an "Introduction to Programming" course, but rather something meant to bridge the gap between the transferable knowledge of programming concepts the reader have learnt prior, to writing code in C. 
+\include{introduction.tex}
 
-As a primer, this book is not meant to be a complete guide to the C programming language as well - there are features of the language which will be skipped or glossed over; the book is meant to give the readers a quick start to start writing code in C. As a feature, this primer will contain some examples and highlights on the differences between C and Java / Python 3.
-
-This work builds and adapts upon the contents from "C for Python programmers" by Carl Burch, used under CC BY-SA 3.0 US and "C for Java Programmers" by George Ferguson, used under CC BY-SA 4.0.
-% TODO: Add hyperlinks
-% http://www.cs.toronto.edu/~patitsas/cs190/c_for_python.html
-% https://www.cs.rochester.edu/u/ferguson/csc/c/c-for-java-programmers.pdf
-
-
-\chapter{Running Your Code}
-When developing programs using a programming language, knowing how to execute your program is an important process. For example, when you have a Python file called \verb|my_program.py|, you might run it by using 
-\begin{minted}{shell}
-python3 my_program.py
-\end{minted}
-in your terminal. Conversely, if you use Java to write your code (say, \verb|Main.java|), you might run it by using
-\begin{minted}{shell}
-javac Main.java
-\end{minted}
-which produces the class file called \verb|Main.class|, which you can then 'run' by using the
-\begin{minted}{shell}
-java Main
-\end{minted}
-command.
+\include{helloworld.tex}
 
 \pagebreak
 
-This roughly shows the difference between executing interpreted and compiled languages. In the case of the Python example above, we have the \textit{interpreter} (\verb|python3|) reading the user's code line-by-line and executing it directly. Conversely, in the case of the Java example, executing the code involves two steps: running the \textit{compiler} (\verb|javac|) to make the class file before being able to run it.
 
-C is a compiled language similar to Java. To execute a code written in C (e.g. \verb|my_program.c|), we first invoke the compiler:
-\begin{minted}{bash}
-gcc my_program.c
-\end{minted}
-which creates the executable file called \verb|a.out|, which we can then run by using
-\begin{minted}{bash}
-./a.out
-\end{minted}
-
-Note: As it is executing the program, the computer has no idea that a.out was just created from some C program: It is simply blindly executing the code found within the a.out file, just as it blindly executes the code found within the gcc file in response to the first command. % from C for Python Devs
-
-Exercise 1:
-Create a file called \verb|hello.c| with the following content:
-\begin{minted}{c}
-#include <stdio.h>
-int main(int argc, char *argv[]) {
-    printf("Hello world!\n");
-}
-\end{minted}
-Compile and run the program.
 
 \chapter{Basic C Syntax}
     \section{Variable Declaration}

@@ -1,0 +1,192 @@
+\chapter{Hello, World!}
+
+To start the primer, this chapter aims to get the reader hit the ground running with several examples which elucidates the \textit{feel} of writing code in C. 
+
+\section{Compiling your code}
+
+When developing programs using a programming language, knowing how to execute your program is an important process. For example, when you have a Python file called \verb|hello_world.py|, you might run it by typing the following in your terminal:
+\codebox{
+\begin{typewriter}
+    python3 hello\_world.py
+\end{typewriter}
+}
+
+Python is an example of what we call an \textit{interpreted} language. In this case, we have the \textit{interpreter} (\verb|python3|) reading the user's code line-by-line and executing it directly.
+
+On the other hand, C is a compiled language; which means that in order to run your code, we would need to compile it first into an executable, which is then run. To execute a code written in C (e.g. \verb|hello_world.c|), we first invoke the compiler:
+\codebox{
+    \begin{typewriter}
+        gcc hello\_world.c
+    \end{typewriter}
+}
+which creates the executable file called \verb|a.out|, which we can then run by using
+\codebox{
+    \begin{typewriter}
+        ./a.out
+    \end{typewriter}
+}
+
+Note: As it is executing the program, the computer has no idea that a.out was just created from some C program: It is simply blindly executing the code found within the a.out file, just as it blindly executes the code found within the gcc file in response to the first command. \\ % from C for Python Devs
+
+\begin{exercise} \label{helloworld1} 
+Compiling your first C program \\
+Create a file called \verb|hello.c| with the following content:
+\begin{minted}{c}
+#include <stdio.h>
+int main() {
+    printf("Hello, world!\n");
+}
+\end{minted}
+Compile and run the program.
+\end{exercise}
+
+\warningbox{
+    If you would like to name the output something other than \begin{typewriter}a.out\end{typewriter}, use the \begin{typewriter}-o\end{typewriter} flag during the compilation process, e.g.
+    \begin{typewriter}gcc hello\_world.c -o hello\_world\end{typewriter} would produce an executable called \begin{typewriter}hello\_world\end{typewriter}.
+}
+
+
+\section{Example 1: Adding two numbers}
+In \autoref{helloworld1}, we have seen a program which would print out "Hello, world!". In contrast to Python, where a \begin{typewriter}print("Hello, world!")\end{typewriter} one-liner suffices, the equivalent C code contains 4 lines. Generally speaking, writing code in C tends to be more verbose than Python, with more parts which the programmer need to annotate. 
+
+Going one step beyond the "Hello, world" program, we are going to examine another simple program. For convenience, we will put the C program and an equivalent Python program side-by-side.
+
+
+\noindent
+\begin{minipage}{0.40\textwidth}
+    \begin{minted}[stripnl=false, linenos]{python3}
+def add(x: int, y: int) -> int:
+    return x + y
+
+z = add(3, 4)
+z = z + 5
+print("z is %d" % z)
+#print("z is {}".format(z))
+#print(f"z is {z}")
+    \end{minted}
+\end{minipage}%
+\hfill%
+\begin{minipage}{0.35\textwidth}
+    \begin{minted}[stripnl=false, linenos]{c}
+#include <stdio.h>
+int add(int x, int y) {
+    return x + y;
+}
+
+int main() {
+    int z = add(3, 4);
+    z = z + 5;
+    printf("z is %d", z);
+    return 0;
+}
+    \end{minted}
+\end{minipage}
+\newpage
+From this example, we observe the following:
+\begin{itemize}
+\item \textbf{Whitespace, Semicolons, and Braces}\\
+In Python, whitespace characters like tabs and newlines are important: You separate your statements by placing them on separate lines, and you indicate the extent of a block (like the body of a while or if statement) using indentation. These uses of whitespace are idiosyncrasies of Python.
+
+On the other hand, C does not use whitespace except for separating words. Most statements are terminated with a semicolon (\verb|;|), and blocks of statements are indicated using a set of braces, '\verb|{|' and '\verb|}|'.
+
+\item \textbf{Variable Declaration and Assignment} \\
+The first time we use the variable \verb|z| in the C example above, we have \verb|int| written preceeding it. This is an example of variable declaration: on the very first occurence of the variable, it must be declared of a certain type. Once a variable is declared, its type cannot be changed.
+
+Line 7 of the code above is an example of a variable declaration \textit{and} assignment. We could split it into two lines like so:
+\begin{minted}{c}
+int z;
+z = add(3, 4);
+\end{minted}
+where the first line is the declaration, and the second is the assignment.
+
+On the subsequent uses of \verb|z|, \verb|int| should not be written in front of it anymore (try writing \verb|int z| instead of \verb|z| on line 8, and compile the program). \textit{Declaration} of a variable should only be done once. 
+
+\item \textbf{Function Definitions} \\
+By looking at the \begin{typewriter}add()\end{typewriter} function, we could observe how functions are defined in C. 
+\begin{itemize}
+    \item C does not have the \verb|def| keyword to define functions.
+    \item The function definition in C begins with the return type of the function, in this case an \verb|int|.
+    \item The function parameters \verb|x| and \verb|y| are written inside the parantheses as in Python, but it is necessary to write the type of each of the parameters, unlike type annotations in Python.
+\end{itemize}
+
+Unlike Python, all code in C must be nested within functions, and functions cannot be nested within each other. This results in the overall structure of C programs being typically very straightforward: it is a list of function definitions, one after another, each containing a list of statements to be executed when the function is called.
+
+\item \textbf{The\begin{typewriter} main()\end{typewriter} function}\\
+Programs have one special function named \verb|main|, whose return type is an integer. This function is the “starting point” for the program: The computer essentially calls the program's \verb|main| function when it wants to execute the program. The integer return value is largely meaningless (for now); we'll always return 0 rather than worrying about how the return value might be used.
+
+
+\item \textbf{The \begin{typewriter} printf()\end{typewriter} function}
+The \verb|printf| function is similar to \verb|print| in Python -- both of them enables us to display reesults for users to see. 
+
+While the \verb|print| function in Python is built-in, the \verb|printf| function is not. \verb|printf| is declared in the standard header file \verb|stdio.h|, hence the need to put include it at the start of the program. (Try to remove the line and compile + run the program; what happens?)
+
+There are some differences between Python's \verb|print| and C's \verb|printf|. One of the biggest differences is the fact that \verb|printf| always takes in a string as the first argument, and the following parameters indicate the values to print. In effect, this looks similar to Python's "old-school" string formatting with the \% as shown in the example. 
+
+\end{itemize}
+
+\section{Example 2: Absolute Sum of Array}
+Suppose that you are tasked to find the sum of the absolute value of each entry in an array (or a list, in Python). Below are the corresponding Python and C code\footnote{The indentation used throughout would be the 1TBS style to save space -- as mentioned, whitespace is not that important to the compiler! Use the indentation style that you like, but be consistent.} which would do the task.
+
+
+\noindent
+\begin{minipage}{0.40\textwidth}
+% \begin{minted}{python3}
+% arr = [1, -2, 3, -4, 5]
+% res = 0
+% for entry in arr:
+%     if entry > 0:
+%         res += entry
+%     elif entry == 0:
+%         continue
+%     else:
+%         res += (entry * -1)
+% print(res)
+% \end{minted}
+% \rule{\textwidth}{1px}
+\begin{minted}[linenos]{python3}
+arr = [1, -2, 3, -4, 5]
+res = 0
+for i in range(len(arr)):
+    if arr[i] > 0:
+        res += arr[i]
+    elif arr[i] == 0:
+        continue
+    else:
+        res += (arr[i] * -1)
+print(res)
+\end{minted}
+\end{minipage}
+\hfill
+\begin{minipage}{0.40\textwidth}
+\begin{minted}[linenos]{c}
+#include <stdio.h>
+
+int main() {
+    int arr[] = {1, -2, 3, -4, 5};
+    int len = 6;
+    int res = 0;
+    
+    int i;
+    for (i = 0; i < len; i++) {
+        if (arr[i] > 0) {
+            res += arr[i];
+        } else if (arr[i] == 0) {
+            continue;
+        } else {
+            res -= arr[i];
+        }
+    }
+    printf("%d", res);
+}
+\end{minted}
+\end{minipage}
+
+
+The above Python solution is not the most 'pythonic' way to solve this task: indeed, one can use a for-each loop (e.g. \begin{typewriter}for entry in arr:\end{typewriter} in line 3) but the style above is chosen to closely follow the C example given. From this example, we can observe the following:
+
+\begin{itemize}
+    \item \textbf{Array declaration and definition}
+    \item \textbf{Array access}
+    \item \textbf{Control flow: for-loops}
+    \item \textbf{Control flow: if, else if, and else}
+\end{itemize}

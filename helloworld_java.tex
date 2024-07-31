@@ -1,0 +1,39 @@
+% Cut-out parts from the Java section of Ch.2
+
+\chapter{Hello, World!}
+When developing programs using a programming language, knowing how to execute your program is an important process. For example, when you have a Python file called \verb|my_program.py|, you might run it by using 
+\begin{minted}{shell}
+python3 my_program.py
+\end{minted}
+in your terminal. Conversely, if you use Java to write your code (say, \verb|Main.java|), you might run it by using
+\begin{minted}{shell}
+javac Main.java
+\end{minted}
+which produces the class file called \verb|Main.class|, which you can then 'run' by using the
+\begin{minted}{shell}
+java Main
+\end{minted}
+command.
+
+This roughly shows the difference between executing interpreted and compiled languages. In the case of the Python example above, we have the \textit{interpreter} (\verb|python3|) reading the user's code line-by-line and executing it directly. Conversely, in the case of the Java example, executing the code involves two steps: running the \textit{compiler} (\verb|javac|) to make the class file before being able to run it.
+
+C is a compiled language similar to Java. To execute a code written in C (e.g. \verb|my_program.c|), we first invoke the compiler:
+\begin{minted}{bash}
+gcc my_program.c
+\end{minted}
+which creates the executable file called \verb|a.out|, which we can then run by using
+\begin{minted}{bash}
+./a.out
+\end{minted}
+
+Note: As it is executing the program, the computer has no idea that a.out was just created from some C program: It is simply blindly executing the code found within the a.out file, just as it blindly executes the code found within the gcc file in response to the first command. % from C for Python Devs
+
+Exercise 1:
+Create a file called \verb|hello.c| with the following content:
+\begin{minted}{c}
+#include <stdio.h>
+int main(int argc, char *argv[]) {
+    printf("Hello world!\n");
+}
+\end{minted}
+Compile and run the program.
