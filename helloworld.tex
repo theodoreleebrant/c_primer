@@ -163,11 +163,10 @@ print(res)
 
 int main() {
     int arr[] = {1, -2, 3, -4, 5};
-    int len = 6;
+    int len = 5;
     int res = 0;
     
-    int i;
-    for (i = 0; i < len; i++) {
+    for (int i = 0; i < len; i++) {
         if (arr[i] > 0) {
             res += arr[i];
         } else if (arr[i] == 0) {
@@ -185,8 +184,22 @@ int main() {
 The above Python solution is not the most 'pythonic' way to solve this task: indeed, one can use a for-each loop (e.g. \begin{typewriter}for entry in arr:\end{typewriter} in line 3) but the style above is chosen to closely follow the C example given. From this example, we can observe the following:
 
 \begin{itemize}
-    \item \textbf{Array declaration and definition}
-    \item \textbf{Array access}
-    \item \textbf{Control flow: for-loops}
+    \item \textbf{Array declaration and definition} \\
+    look at the way arrays are declared: int arr[]
+    array size is fixed \footnote{VLA...}
+    \item \textbf{Array access} \\
+    no len function; keep length separately -- important info don't lose
+    look at the way elements are accessed
+    \item \textbf{Control flow: for-loops} \\
+    there is only one type of for-loops in C, and it looks like \\
+    \begin{typewriter}
+        for (init\_clause ; cond\_expr ; iteration\_expr)
+    \end{typewriter} \\
+    where the \verb|init_clause| specifies the initial condition, the \verb|cond_expr| specifies when the loop should end, and the \verb|iteration_expr| specifies what happens at the end of each loop. Using the example: in line 8, we specify that at the start of the loop, the value of \verb|i| is 0 (remember, first time usage of i so we need to declare with the int keyword)
     \item \textbf{Control flow: if, else if, and else}
+    No elif keyword; condition needs to be in parantheses
+    \item \textbf{Control flow: continue and break} \\
+    These behaves the same as in Python. 
+    \item \textbf{Control flow: while loops}
+    While not present in the example, C has while loops which work similarly to the one in Python. There are some syntactical differences; namely the condition needing to be contained within parantheses and the usage of braces instead of indentation for the body.
 \end{itemize}
