@@ -1,0 +1,96 @@
+\chapter{Arcane stuff}
+
+pointer haha hehe
+
+this chapter for stuff which are too far from py to actually have a comparison
+
+\section{What is a pointer}
+concept of pointer, dereferencing
+\begin{minted}[linenos]{c}
+int a = 1;
+int b[2]; // array of size 2
+
+int *ptr; // pointer to int
+ptr = &a; // ptr now points to a
+*ptr = 2; // dereference ptr, a is now 2
+ptr = &b[1]; // ptr now points to b[1]
+\end{minted}
+
+\section{Arrays and Pointers}
+array decay, pointer arithmetic, using pointers in functions
+
+\begin{minted}[linenos]{c}
+/* Note C only has pass by value. 
+We use pointers in args to mitigate this. 
+Pointer values (addresses) are copied, so we can dereference 
+to access underlying value */
+void swap(int *x , int *y) {
+    int temp;
+    temp = *x;
+    *x = *y;
+    *y = temp;
+}
+
+long add_all(long len, int* arr) {
+    long res = 0;
+    for (int i = 0; i < len; i++) {
+        res = res + *(ptr + i);
+    }
+}
+
+int main() {
+    int arr[] = {9, 8, 6, 4, 2};
+    long len = 5;
+
+    printf("%d, %d", arr[2], arr[3]);
+    swap(arr[2], arr[3]);
+    printf("%d, %d", arr[2], arr[3]);
+
+    add_all(len, arr)
+
+    return 0;
+}
+\end{minted}
+
+\section{Strings}
+it's a char array with a NUL at the end!!!
+
+
+\section{Structs}
+\begin{minted}[linenos]{c}
+/* defining and initializing structs */
+struct pt
+{
+    int x;
+    int y;
+}
+
+// we access via name.member
+struct pt p;
+p.x  = 1;
+p.y = 2;
+
+/* functions and struct arguments */
+struct pt scale_point(struct pt p1, int scale)
+{
+    p1.x *= scale;
+    p1.y *= scale;
+    return p1;
+}
+// we can also use ptrs to structs
+void do_nothing(struct pt *p)
+{
+    int x = p->x; // shorthand for (*p).x
+}
+
+/* to avoid those cumbersome struct keywords */
+typedef struct xd {
+    int owo;
+    int uwu;
+} xd;
+// consider cutting into struct + typedef indiv
+
+int main() {
+    xd arr[100]; // array of 100 xds
+}
+\end{minted}

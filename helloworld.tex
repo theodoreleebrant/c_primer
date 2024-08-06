@@ -69,15 +69,17 @@ print("z is %d" % z)
 \begin{minipage}{0.35\textwidth}
     \begin{minted}[stripnl=false, linenos]{c}
 #include <stdio.h>
-int add(int x, int y) {
-    return x + y;
-}
+int add(int, int);
 
 int main() {
     int z = add(3, 4);
     z = z + 5;
     printf("z is %d", z);
     return 0;
+}
+
+int add(int x, int y) {
+    return x + y;
 }
     \end{minted}
 \end{minipage}
@@ -97,22 +99,22 @@ Line 7 of the code above is an example of a variable declaration \textit{and} as
 int z;
 z = add(3, 4);
 \end{minted}
-where the first line is the declaration, and the second is the assignment.
+where the first line is the declaration, and the second is the assignment. Note that a variable has an unknown value before its first assignment, even if it has been declared.
 
 On the subsequent uses of \verb|z|, \verb|int| should not be written in front of it anymore (try writing \verb|int z| instead of \verb|z| on line 8, and compile the program). \textit{Declaration} of a variable should only be done once. 
 
 \item \textbf{Function Definitions} \\
-By looking at the \begin{typewriter}add()\end{typewriter} function, we could observe how functions are defined in C. 
+By looking at the \begin{typewriter}add()\end{typewriter} function (line 11-13), we could observe how functions are defined:
 \begin{itemize}
     \item C does not have the \verb|def| keyword to define functions.
-    \item The function definition in C begins with the return type of the function, in this case an \verb|int|.
-    \item The function parameters \verb|x| and \verb|y| are written inside the parantheses as in Python, but it is necessary to write the type of each of the parameters, unlike type annotations in Python.
+    \item Function definitions in C begins with the return type of the function, in this case \verb|int|.
+    \item The function parameters \verb|x| and \verb|y| are written inside the parantheses as in Python, but it is necessary to write the type of each parameter.
 \end{itemize}
 
 Unlike Python, all code in C must be nested within functions, and functions cannot be nested within each other. This results in the overall structure of C programs being typically very straightforward: it is a list of function definitions, one after another, each containing a list of statements to be executed when the function is called.
 
 \item \textbf{The\begin{typewriter} main()\end{typewriter} function}\\
-Programs have one special function named \verb|main|, whose return type is an integer. This function is the “starting point” for the program: The computer essentially calls the program's \verb|main| function when it wants to execute the program. The integer return value is largely meaningless (for now); we'll always return 0 rather than worrying about how the return value might be used.
+Programs have one special function named \verb|main|, whose return type is an integer. This function is the “starting point” for the program: The computer essentially calls the program's \verb|main| function when it wants to execute the program. The return value is an integer, and in the example we returned a 0, indicating that the program has finished successfully. 
 
 
 \item \textbf{The \begin{typewriter} printf()\end{typewriter} function}
@@ -122,11 +124,17 @@ While the \verb|print| function in Python is built-in, the \verb|printf| functio
 
 There are some differences between Python's \verb|print| and C's \verb|printf|. One of the biggest differences is the fact that \verb|printf| always takes in a string as the first argument, and the following parameters indicate the values to print. In effect, this looks similar to Python's "old-school" string formatting with the \% as shown in the example. 
 
+\item \textbf{Function prototypes}\\
+Since we are writing the \verb|add| function after the \verb|main| function, we need to tell the compiler on the types expected in the function. If we were to omit line 3, the compiler would emit a warning as we are using \verb|add| in line 5 but we have not seen the function definition yet. 
+
+For this particular example, we can delete the function prototype by moving the \verb|add| function to above the \verb|main| function; however, bigger codebases often necessitates the usage of these function prototypes, especially when we are calling functions defined in another file. 
+
+In the case of functions defined in another file, the function prototypes are usually put in header files (.h). We can see this happening with the \verb|printf| function, which has the function prototype in \verb|stdio.h|.
 \end{itemize}
 
+\newpage
 \section{Example 2: Absolute Sum of Array}
 Suppose that you are tasked to find the sum of the absolute value of each entry in an array (or a list, in Python). Below are the corresponding Python and C code\footnote{The indentation used throughout would be the 1TBS style to save space -- as mentioned, whitespace is not that important to the compiler! Use the indentation style that you like, but be consistent.} which would do the task.
-
 
 \noindent
 \begin{minipage}{0.40\textwidth}
@@ -162,7 +170,7 @@ print(res)
 #include <stdio.h>
 
 int main() {
-    int arr[] = {1, -2, 3, -4, 5};
+    int arr[5] = {1, -2, 3, -4, 5};
     int len = 5;
     int res = 0;
     
@@ -185,21 +193,48 @@ The above Python solution is not the most 'pythonic' way to solve this task: ind
 
 \begin{itemize}
     \item \textbf{Array declaration and definition} \\
-    look at the way arrays are declared: int arr[]
-    array size is fixed \footnote{VLA...}
+    Arrays in C are akin to Lists in Python, with some key differences. First, C arrays could only contain one type of data. In the example above, line 4 declares and initializes an array of \verb|int|. Second, the array size is fixed\footnote{More experienced readers will point at VLA and / or dynamically-allocated arrays; for simplicity, we are skipping this.}; for this example, we have an array size of 5. There is no way to mutate \verb|arr| into one of size 6, unlike in Python where you can call \verb|.append()|.  
+
     \item \textbf{Array access} \\
-    no len function; keep length separately -- important info don't lose
-    look at the way elements are accessed
+    Accessing an array in C looks similar to array accesses in Python -- compare line 4 in the Python code to line 9 in the C code. Note that valid array indexes for the example is only 0 to 4 inclusive, i.e. you cannot access arr[-1] as in Python.
+    
+    Arrays in C have less capability than lists in Python. One of the important differences is that C lacks boundary check in array accesses. If we try to access \verb|arr[10]| in the Python code above, we will get an \verb|IndexError|, since the length of arr is 5. However, if we write \verb|arr[10]| in C, it will still compile and run, giving the programmer gibberish results and potentially crashing the program on running. 
+    
+    This should tell you that it's important to keep track of the length of the arrays you have in C. Unfortunately, there is no equivalent of Python's \verb|len()| function to check the length of the array. The programmer needs to keep another variable, in the example above the \verb|len| variable, to keep track of the length of the array.
+
+
     \item \textbf{Control flow: for-loops} \\
-    there is only one type of for-loops in C, and it looks like \\
+    The for-loop in Python and C works a little differently. Python employs what is sometimes dubbed a 'for-each' loop, where it goes through every item in an iterable (i.e. 'for each item in this iterable...').
+
+    Meanwhile, C for-loops looks like the following: \\
     \begin{typewriter}
         for (init\_clause ; cond\_expr ; iteration\_expr)
     \end{typewriter} \\
-    where the \verb|init_clause| specifies the initial condition, the \verb|cond_expr| specifies when the loop should end, and the \verb|iteration_expr| specifies what happens at the end of each loop. Using the example: in line 8, we specify that at the start of the loop, the value of \verb|i| is 0 (remember, first time usage of i so we need to declare with the int keyword)
-    \item \textbf{Control flow: if, else if, and else}
-    No elif keyword; condition needs to be in parantheses
-    \item \textbf{Control flow: continue and break} \\
-    These behaves the same as in Python. 
-    \item \textbf{Control flow: while loops}
-    While not present in the example, C has while loops which work similarly to the one in Python. There are some syntactical differences; namely the condition needing to be contained within parantheses and the usage of braces instead of indentation for the body.
+    where 
+    \begin{itemize}
+    \item \verb|init_clause| specifies the initial condition
+    \item \verb|cond_expr| specifies when the loop should end
+    \item \verb|iteration_expr| specifies what happens at the end of each loop
+    \end{itemize}  
+    
+    One of the most common manners this loop is used can be seen in the example above (line 8 of the C code), which is strikingly similar to using Python's for-loop with the \verb|range()| function (line 3 of the Python code). However, do note that C doesn't restrict \verb|cond_expr| to be related to the \verb|init_clause| or \verb|iteration_expr| - you're free, for example, to use variables not declared in the \verb|init_clause|.
+
+    \item \textbf{Control flow: if, else if, else; continue and break} \\
+    These works similar to Python. Do note that the condition needs to be in parantheses, and that there is no \verb|elif| keyword -- instead, write \verb|else if|.
+    
+    \item \textbf{Control flow: while loops}\\
+    While not present in the example, C has while-loops behaving similarly to Python's. 
 \end{itemize}
+
+At this point, we have covered the very basics of the C programming language. You should know how to declare and initialize variables, use the control flow mechanisms, as well as write functions. 
+% Below are some simple exercises you can attempt to try out what has been explored above: \\
+
+% \begin{exercise}
+% Fibonacci numbers \\
+% Write a program that prints out the first 10 Fibonacci numbers.\\
+% \end{exercise}
+
+% \begin{exercise}
+% Palindrome number \\
+
+% \end{exercise}

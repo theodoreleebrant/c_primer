@@ -23,8 +23,12 @@
 \theoremstyle{definition}
 \newtheorem{exercise}{Exercise}[chapter]
 
-
+\definecolor{citrpurple}{HTML}{4d235f}
 \usepackage{hyperref}
+\hypersetup{%
+  colorlinks=true,% hyperlinks will be coloured
+  urlcolor=citrpurple,
+}
 \providecommand*{\exerciseautorefname}{Exercise}
 % \renewcommand{\exerciseautorefname}{Exercise}
 
@@ -71,7 +75,7 @@
 	{\large June 2024\par}
 \end{titlepage}
 
-\tableofcontents
+% \tableofcontents
 
 \setlength{\parskip}{12pt}
 
@@ -81,135 +85,8 @@
 
 \pagebreak
 
+\include{pointers.tex}
 
-
-\chapter{Basic C Syntax}
-    \section{Variable Declaration}
-    In C, variables need to be declared before it is used. A variable declaration includes declaring the type of the variable. The following example declares a variable \mintinline{c}{x} with the type \mintinline{c}{int}, a variable \mintinline{c}{y} with the type \mintinline{c}{float}, and a variable \mintinline{c}{z} with the type \mintinline{c}{int}:
-    \begin{minted}{c}
-        int x;
-        float y;
-        int z;
-    \end{minted}
-    After the variable have been declared, values can be assigned to it using the \verb|=| operator:
-    \begin{minted}{c}
-        x = 2;
-        y = 3.0;
-        z = x * 5;
-    \end{minted}
-    Additionally, you can also combine variable assignment and declaration in one line:
-    \begin{minted}{c}
-        int b = 10;
-        float f = 3.1415;
-    \end{minted}
-
-    [Java]
-    The basics of variable declaration and assignment in C has no major difference from Java's own variable declaration and assignment.
-    
-    [Python]
-    In Python, a variable is created at the point where you assign a value to it, e.g. writing \mintinline{python}{q=1.602} in Python will create the variable q with the value 1.602. 
-    
-    If you try to assign a value to a variable which is not yet declared in C, the compiler would refuse to compile your code. Additionally, once you declare a variable to be of a particular type, you cannot change its type: If the variable x is declared of type double, and you assign “x = 3;”, then x will actually hold the floating-point value 3.0 rather than the integer 3. You can, if you wish, imagine that x is a box that is capable only of holding double values; if you attempt to place something else into it (like the int value 3), the compiler converts it into a double so that it will fit. %C for Py Devs
-
-    %summarybox
-    % - Variables need to be declared before usage, including assignment
-    % - Variable declaration and assignment can be done in one line
-    % - Declaring variable also assigns the type of the variable, which cannot be changed
-
-    %exercise
-    % exercise 1: (for compiler warning) use a variable without decl; e.g. int a = 2; int b = 3; c = a * b;
-    % exercise 2: ???
-    
-    \section{Statements and Blocks}
-    [Py] Whitespace whitespace whitespace...
-    Statement is endl, block is indentation
-
-    [C/Java] End statements with semicolons, blocks are demarcated by  \{\}
-    
-    \section{Control Flow}
-        \subsection{Conditionals}
-        if / switch
-        \subsection{Iterations}
-        while / for / do-while
-        break, continue
-        \subsection{Others}
-        goto considered harmful
-
-\chapter{Basic C Features}
-    \section{Comments}
-    Single-line comment with //, multiline comment with /* */ 
-    
-    [Py] \#
-    
-    [Java] // only
-    
-    Trivia: Prior to C99, C only supports /* */
-
-    
-    \section{Primitive Types}
-    int, short, long, double, float, char
-
-    [Java] different char, no boolean
-
-    [Python] uhh good luck lol 
-
-    [Both] No boolean. 0 is false, non-zero is true. See: truthy values in Python
-
-    The special case of void
-    
-    \section{Operators}
-    the operators and precedence table.
-
-    [Py] pow, and, or, not. precedence of not.
-
-    [Java] + is not string concat. Strings are not even primitive types
-
-    Trivia: assignment is an operator, returns the value assigned. Can lead to bad style / unreadable code if chained too much!
-    
-    \section{Arrays}
-    basic syntax; 0-index. initialization.
-
-    [Py] static length.
-    
-    remember, no way to access length of array; neither is there bounds checking.
-    
-    
-    \section{Strings}
-    Strings is just char array ended with NUL (ASCII 0) - this makes the length of the array = length of string + 1 at least. Mutable.
-        \subsection{String Formatting}
-        escape characters, percent-character
-    
-    \section{Structs and Custom Type Definition}
-    We want to make more expressive types; e.g. something that represents a point with two integer x and y coordinate. Java / Py will resort to classes. C - no such thing. We can use structs, which are types composed of other types. 
-
-    declaration syntax; member; tag; access syntax
-
-    % skipping unions
-
-    typedef structs;
-    other typedefs;
-
-\chapter{Functions}
-    \section{Function Parameters and Arguments}
-    \section{Function Declarations}
-    Forward declaration / Function prototypes
-    \section{The main Function}
-
-\chapter{Libraries and Linking}
-    \section{Preprocessor}
-    \section{System Libraries}
-    \section{Header Files}
-    \section{Compiling and Linking Multiple Files}
-    \section{The Makefile}
-
-\chapter{Pointers and Memory}
-    \section{Variables, Addresses, and Pointers}
-    \section{Passing Arguments by Reference}
-    \section{Dynamic Memory Allocation}
-    \section{Function Pointers}
-
-\chapter{Debugging}
-    \section{GDB}
-    \section{Valgrind}
+\include{closing.tex}
 
 \end{document}
