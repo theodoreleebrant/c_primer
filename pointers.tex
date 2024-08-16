@@ -4,8 +4,65 @@ pointer haha hehe
 
 this chapter for stuff which are too far from py to actually have a comparison
 
-\section{What is a pointer}
-concept of pointer, dereferencing
+\section{What is a pointer?}
+
+A \textbf{pointer variable} (simply referred as a \textit{pointer}) stores memory address values where another value is located.
+Pointers are declared by adding a dereferencing operator (i.e., an asterisk, \verb|*|) either before a given name (e.g., \verb|*ptr|), or after the data type (e.g., \verb|int*|).
+For consistency, the asterisk will be placed just before the pointer variable's name.
+
+\begin{minted}[linenos]{c}
+/* Declaring an int pointer variable */
+int *ptr1; // we will use this convention
+int* ptr2; // also valid, but not used here
+\end{minted}
+
+The main difference between a typical variable and a pointer is that a variable directly references a value, whilst a pointer indirectly references a value.
+To help illustrate this, refer to the following code and the corresponding output (denoted in comments).
+
+\begin{minted}[linenos]{c}
+// Declare a pointer variable named ptr
+int *ptr;
+
+// Set ptr to point to a different memory address containing the value 1
+*ptr = 1;
+
+printf("%d\n", *ptr); // 1
+printf("%p\n", ptr);  // 0x7ff7b77f61c0
+printf("%p\n", &ptr); // 0x7ff7b77f6180
+\end{minted}
+
+Note that printing the value of \verb|*ptr| and \verb|ptr| render different results.
+Also, if the code is compiled and run a second time, the address value produced from printing the value of \verb|ptr| may change.
+Here, \verb|ptr| directly references (contains) a memory address value, which is the location where that value of 1 is stored in memory.
+This memory address value uses the \verb|%p| conversion specifier.
+
+It can also be implied from here that variables occupy an address in memory, and this includes pointers as well.
+We can view the address of any variable using the address operator (i.e., ampersand, \verb|&|).
+Continuing from the previous example, printing the value of \verb|&ptr| produces the memory address where the pointer \verb|ptr| is located.
+Compiling and running the code a second time may also once again change the printed address value.
+
+\begin{minted}[linenos]{c}
+printf("%p\n", &ptr);
+\end{minted}
+
+\begin{figure}
+    \includegraphics[width=\linewidth]{pointers.jpg}
+    % \caption{A boat.}
+    % \label{fig:boat1}
+\end{figure}
+
+\textbf{Dereferencing} a pointer variable refers to the act of accessing or manipulating a value located at a memory address pointed to by a pointer.
+This is done also by adding the dereferencing operator/the asterisk \verb|*| before the pointer variable's name.
+Not to be mistaken with declaring pointer variables, this typically happens when trying to access the value located in the memory address being pointed to.
+We have seen this in an earlier example with the following line:
+
+\begin{minted}[linenos]{c}
+printf("%d\n", *ptr);
+\end{minted}
+
+% concept of pointer, dereferencing
+Here's another example:
+
 \begin{minted}[linenos]{c}
 int a = 1;
 int b[2]; // array of size 2
@@ -15,6 +72,27 @@ ptr = &a; // ptr now points to a
 *ptr = 2; // dereference ptr, a is now 2
 ptr = &b[1]; // ptr now points to b[1]
 \end{minted}
+
+
+\begin{exercise} \label{pointers1} 
+Understanding pointers. \\
+State the output of the following code.
+Assume memory addresses of variables \verb|m| is \verb|0x3333|,  \verb|n| is \verb|0x5555|, and \verb|p| is \verb|0x2222|.
+\begin{minted}{c}
+int m, *n, **p;
+
+m = 19;
+n = &m;
+p = &n;
+
+printf("%d / %p\n", m, &m);
+printf("%p / %p / %d\n", n, &n, %n);
+printf("%p / %p / %p\n", p, &p, %p);
+
+*n = 8;
+printf("%d / %p\n", m, n);
+\end{minted}
+\end{exercise}
 
 \section{Arrays and Pointers}
 array decay, pointer arithmetic, using pointers in functions
