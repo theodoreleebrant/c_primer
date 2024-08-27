@@ -1,8 +1,15 @@
 \chapter{Arcane stuff}
 
-pointer haha hehe
+% pointer haha hehe
 
-this chapter for stuff which are too far from py to actually have a comparison
+% this chapter for stuff which are too far from py to actually have a comparison
+
+This chapter sheds light onto concepts that are too dissimilar to Python to actually have a comparison.
+For the most part, these concepts especially involving \textit{pointers} can be difficult to understand at first.
+However, it is still possible to be able to grasp these concepts given ample time and practice.
+Since this guide is meant to be a quick guide, we will not dabble too deep into the following concepts unless necessary to alleviate as many gray areas as possible.
+
+\textit{Brace yourselves, you're in for quite a ride.}
 
 \section{What is a pointer?}
 
@@ -10,7 +17,7 @@ A \textbf{pointer variable} (simply referred as a \textit{pointer}) stores memor
 Pointers are declared by adding a dereferencing operator (i.e., an asterisk, \verb|*|) either before a given name (e.g., \verb|*ptr|), or after the data type (e.g., \verb|int*|).
 For consistency, the asterisk will be placed just before the pointer variable's name.
 
-\begin{minted}[linenos]{c}
+\begin{minted}{c}
 /* Declaring an int pointer variable */
 int *ptr1; // we will use this convention
 int* ptr2; // also valid, but not used here
@@ -41,7 +48,7 @@ We can view the address of any variable using the address operator (i.e., ampers
 Continuing from the previous example, printing the value of \verb|&ptr| produces the memory address where the pointer \verb|ptr| is located.
 Compiling and running the code a second time may also once again change the printed address value.
 
-\begin{minted}[linenos]{c}
+\begin{minted}{c}
 printf("%p\n", &ptr);
 \end{minted}
 
@@ -52,11 +59,11 @@ printf("%p\n", &ptr);
 \end{figure}
 
 \textbf{Dereferencing} a pointer variable refers to the act of accessing or manipulating a value located at a memory address pointed to by a pointer.
-This is done also by adding the dereferencing operator/the asterisk \verb|*| before the pointer variable's name.
+This is done also by adding the asterisk \verb|*| before the pointer variable's name.
 Not to be mistaken with declaring pointer variables, this typically happens when trying to access the value located in the memory address being pointed to.
 We have seen this in an earlier example with the following line:
 
-\begin{minted}[linenos]{c}
+\begin{minted}{c}
 printf("%d\n", *ptr);
 \end{minted}
 
@@ -73,12 +80,16 @@ ptr = &a; // ptr now points to a
 ptr = &b[1]; // ptr now points to b[1]
 \end{minted}
 
+We can also use pointers to point to memory locations in an array.
+As seen in these two lines, we initialize \verb|ptr| to point to \verb|a|.
+Hence, printing out the value of \verb|ptr| would give the memory address of \verb|a|, while printing that of \verb|*ptr| will render the value of \verb|a| itself, that being 1.
+
 
 \begin{exercise} \label{pointers1} 
 Understanding pointers. \\
 State the output of the following code.
 Assume memory addresses of variables \verb|m| is \verb|0x3333|,  \verb|n| is \verb|0x5555|, and \verb|p| is \verb|0x2222|.
-\begin{minted}{c}
+\begin{minted}[linenos]{c}
 int m, *n, **p;
 
 m = 19;
@@ -131,17 +142,88 @@ int main() {
 \end{minted}
 
 \section{Strings}
+
+There is no primitive string data type in C; strings in C are essentially an array of characters with a \verb|NUL| character at the end.
+
 it's a char array with a NUL at the end!!!
 
 
 \section{Structs}
+
+\textbf{Structures}, or \textit{structs}, are a collection of related variables under one name.
+In contrast to arrays which are a collection of variables of the same type (e.g., all \verb|int|s), struct variables can be of different types.
+Consider the following struct definition below:
+
+\begin{minted}{c}
+struct pt
+{
+    int x;
+    int y;
+}; // remember to add the semicolon after struct definition
+\end{minted}
+
+Here, we use the keyword \verb|struct| to define a struct, followed by \verb|pt| as its identifier name.
+The members of the struct refer to the variables declared within the braces of the struct definition (in this case, they are integer variables \verb|x| and \verb|y|).
+
+Structs act as new data types that can be used to define variables.
+The listing below demonstrates how to define a variable of the struct \verb|pt| data type, followed by how to access the struct's members.
+
+\begin{minted}{c}
+// we access via name.member
+struct pt p;
+p.x  = 1;
+p.y = 2;
+\end{minted}
+
+Since structs act as data types usable for defining variables, we can also use them in function definitions, as well as declare pointers to values of the struct's data type.
+Using pointers to structs can be useful, especially with creating some data structures like linked lists.
+
+\begin{minted}[linenos]{c}
+/* functions and struct arguments */
+struct pt scale_point(struct pt p1, int scale)
+{
+    p1.x *= scale;
+    p1.y *= scale;
+    return p1;
+}
+
+// we can also use ptrs to structs
+void do_nothing(struct pt *p)
+{
+    int x = p->x; // shorthand for (*p).x
+}
+\end{minted}
+
+By now, you may have caught on that you require the keyword \verb|struct| to be used whenever you try to reference the declared struct data type.
+The keyword \verb|typedef| can be used to reduce the need for necessitating the \verb|struct| keyword to be used each time it is referenced.
+\verb|typedef| provides a synonym mechanism for previously defined data types.
+
+To declare the earlier example using \verb|typedef|, we add on to the normal struct definition by adding \verb|typedef| before the \verb|struct| keyword, and a special name right after the struct's braces.
+Here, we redeclared \verb|struct pt| to be synonymous to \verb|Pt|.
+Hence, we can declare a \verb|struct pt| variable simply by calling \verb|Pt| instead.
+
+\begin{minted}[linenos]{c}
+typedef struct pt
+{
+    int x;
+    int y;
+} Pt;
+
+Pt p; // Ah.. much shorter, much better. :)
+
+p.x  = 1;
+p.y = 2;
+\end{minted}
+
+Here is a summary of the code illustrated in this section.
+
 \begin{minted}[linenos]{c}
 /* defining and initializing structs */
 struct pt
 {
     int x;
     int y;
-}
+};
 
 // we access via name.member
 struct pt p;
