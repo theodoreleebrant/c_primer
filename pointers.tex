@@ -143,9 +143,41 @@ int main() {
 
 \section{Strings}
 
-There is no primitive string data type in C; strings in C are essentially an array of characters with a \verb|NUL| character at the end.
+There is no primitive string data type in C; strings in C are essentially an array of characters with a \verb|NUL| character (\verb|'\0'|) at the end.
+You may declare a C string as a \verb|char| array, or a \verb|char| pointer to it, like as follows:
 
-it's a char array with a NUL at the end!!!
+% it's a char array with a NUL at the end!!!
+
+\begin{minted}[linenos]{c}
+// Both define strings with the value "ice-cream" 
+char[10] str1 = "ice-cream";
+char* str2 = "ice-cream";
+\end{minted}
+
+Here, the first definition creates a 10-character array \verb|str1| containing the characters 
+\verb|'i'|, \verb|'c'|, \verb|'e'|, \verb|'-'|, \verb|'c'|, \verb|'r'|, \verb|'e'|, \verb|'a'|, \verb|'m'| and \verb|'\0'|.
+When defining a character array to contain a string, you must ensure that it is large enough to contain each character in the string, as well as the \verb|NUL| (\verb|'\0'|).
+
+\begin{minted}{c}
+// str1 can also be declared as follows:
+char[] str1 = {'i', 'c', 'e', '-', 'c', 'r', 'e', 'a', 'm', '\0'};
+\end{minted}
+
+The second definition creates a pointer variable \verb|str2| which points to the string \verb|"ice-cream"| somewhere in memory.
+Here, there need not be a predefined size as to how big the array should be; the size is calculated automatically based on how many characters are included in the string.
+
+\begin{minted}[linenos]{c}
+// You can use scanf to store string values.
+// No "&" before "word"; "word" acts as a pointer to a string value
+scanf("%s", word); 
+\end{minted}
+
+\warningbox{
+    \begin{typewriter}scanf\end{typewriter} will read characters until a space, tab, newline or end-of-file (EOF) indicator is encountered.
+    To prevent crashes due to reading more characters than the available space allocated (e.g., entered string of length 10 to occupy a char array of size 9),
+    you can specify the field width in the conversion specifier (e.g., \begin{typewriter}\%9s\end{typewriter}
+    - reads 19 characters maximum and saves last character for \begin{typewriter}NUL\end{typewriter} (\begin{typewriter}\textbackslash0\end{typewriter})).
+}
 
 
 \section{Structs}
